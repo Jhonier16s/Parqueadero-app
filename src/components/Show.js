@@ -12,11 +12,14 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
+
+
 const Show = () => {
   //hooks
 
   const [cars, setCars] = useState([]);
-
+  const [price, setPrice] = useState(0);
+ 
   //database
 
   const carsCollection = collection(db, "cars");
@@ -67,23 +70,35 @@ const Show = () => {
     }else if (positiveHourCar >= 15) {
       tarifa = 20000;
     }
-
+  
+    
+   /*  const handlePrice =()=> {
+      let precioIngresado = document.getElementById("monto").value;
+      console.log(precioIngresado);
+       precioIngresado - tarifa
+    } */
+ 
     await Swal.fire({
-      title: "Desea Retirar el vehiculo?",
-      text: `No puede revertir esta accion! El vehiculo estuvo ${positiveHourCar} horas en el parqueadero TOTAL A PAGAR : ${tarifa} pesos`,
+      title: `Retirar Vehiculo <br></br> El vehiculo estuvo ${positiveHourCar} horas en el parqueadero TOTAL A PAGAR : ${tarifa} pesos`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Si, Retirar!",
       validationMessage: "Por favor ingrese una hora valida",
+      html: `<input type="number" id="monto" class="swal2-input" placeholder="Ingrese monto pagado" required>
+       
+      `,
     }).then((result) => {
+      let precioIngresado = document.getElementById("monto").value;
+      console.log(precioIngresado);
+      let devuelta = precioIngresado-tarifa;
       console.log(tarifa);
       if (result.isConfirmed) {
         deleteCar(id);
         Swal.fire(
           "Retirado!",
-          `El vehiculo ha sido retirado. Gracias por su visita!`,
+          `El vehiculo ha sido retirado. Gracias por su visita! Devuelta: ${devuelta} pesos`,
           "success"
         );
       }
@@ -140,6 +155,7 @@ const Show = () => {
                         className="btn btn-danger mx-2"
                       >
                         <i className="fa-solid fa-delete-left"></i>
+                        
                       </button>
                     </td>
                   </tr>
